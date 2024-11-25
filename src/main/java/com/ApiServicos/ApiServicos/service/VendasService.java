@@ -5,9 +5,11 @@ import com.ApiServicos.ApiServicos.Vendas;
 import java.util.List;
 
 public interface VendasService {
-    public String createVenda(Vendas venda);
-    public String updateVenda(Vendas venda);
-    public String deleteVenda(String IdVenda);
-    public Vendas getVenda(String IdVenda);
-    public List<Vendas> getAllVendas();
+    String createVenda(Vendas venda);
+    String updateVenda(int idVenda, Vendas venda); // Alterado para aceitar o ID como int
+    String deleteVenda(int idVenda); // Alterado para aceitar o ID como int
+    Vendas getVenda(int idVenda); // Alterado para aceitar o ID como int
+    List<Vendas> getAllVendas();
 }
+
+

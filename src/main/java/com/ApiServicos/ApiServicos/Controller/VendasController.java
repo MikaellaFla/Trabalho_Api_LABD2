@@ -2,6 +2,8 @@ package com.ApiServicos.ApiServicos.Controller;
 
 import com.ApiServicos.ApiServicos.Vendas;
 import com.ApiServicos.ApiServicos.service.VendasService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,31 +19,43 @@ public class VendasController {
     }
 
     @GetMapping("{IdVenda}")
-    public Vendas getVendaDetalhes(@PathVariable("IdVenda") String IdVenda) {
-        return vendasService.getVenda(IdVenda);
+    public ResponseEntity<Vendas> getVendaDetalhes(@PathVariable("IdVenda") int IdVenda) {  // Alterado para int
+        Vendas venda = vendasService.getVenda(IdVenda);  // Alterado para int
+        if (venda != null) {
+            return new ResponseEntity<>(venda, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    @GetMapping()
-    public List<Vendas> getAllVendasDetalhes() {
-        return vendasService.getAllVendas();
+    @GetMapping
+    public ResponseEntity<List<Vendas>> getAllVendasDetalhes() {
+        List<Vendas> vendas = vendasService.getAllVendas();
+        return new ResponseEntity<>(vendas, HttpStatus.OK);
     }
 
     @PostMapping
-    public String createVendaDetalhes(@RequestBody Vendas venda) {
+    public ResponseEntity<String> createVendaDetalhes(@RequestBody Vendas venda) {
         vendasService.createVenda(venda);
-        return "Venda Criada Com Sucesso!";
+        return new ResponseEntity<>("Venda Criada Com Sucesso!", HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public String updateVendaDetalhes(@RequestBody Vendas venda) {
-        vendasService.updateVenda(venda);
-        return "Venda Atualizada Com Sucesso!";
+    @PutMapping("{IdVenda}")
+    public ResponseEntity<String> updateVendaDetalhes(@PathVariable("IdVenda") int IdVenda, @RequestBody Vendas venda) {  // Alterado para int
+        String resultado = vendasService.updateVenda(IdVenda, venda);  // Alterado para int
+        if ("Sucesso".equals(resultado)) {
+            return new ResponseEntity<>("Venda Atualizada Com Sucesso!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Venda Não Encontrada!", HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("{IdVenda}")
-    public String deleteVendaDetalhes(@PathVariable("IdVenda") String IdVenda) {
-        vendasService.deleteVenda(IdVenda);
-        return "Venda Deletada Com Sucesso!";
+    public ResponseEntity<String> deleteVendaDetalhes(@PathVariable("IdVenda") int IdVenda) {  // Alterado para int
+        vendasService.deleteVenda(IdVenda);  // Alterado para int
+        return new ResponseEntity<>("Venda Deletada Com Sucesso!", HttpStatus.OK);
     }
 }
+
+
 

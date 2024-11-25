@@ -2,9 +2,6 @@ package com.ApiServicos.ApiServicos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,34 +11,42 @@ import java.util.List;
 public class Agendamento {
 
     @Id
-    private String IdAgendamento;
+    private int IdAgendamento;
+
     private LocalDateTime DataeHoraAgendamento;
     private String StatusAgendamento;
+    private String tipoAutomovel;
+    private String numeroPlaca;
 
     @ManyToOne
-    @JoinColumn(name = "id_servico", nullable = false) // nome da coluna no banco de dados
+    @JoinColumn(name = "id_servico", nullable = false)
     private Servico servico;
 
     @OneToMany(mappedBy = "agendamento", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("agendamento")
     private List<Vendas> vendas;
 
+    // Construtor vazio
     public Agendamento() {
     }
 
-    public Agendamento(String idAgendamento, Servico servico, String statusAgendamento, LocalDateTime dataeHoraAgendamento) {
-        IdAgendamento = idAgendamento;
+    // Construtor completo
+    public Agendamento(int idAgendamento, Servico servico, String statusAgendamento, LocalDateTime dataeHoraAgendamento, String tipoAutomovel, String numeroPlaca) {
+        this.IdAgendamento = idAgendamento;
         this.servico = servico;
-        StatusAgendamento = statusAgendamento;
-        DataeHoraAgendamento = dataeHoraAgendamento;
+        this.StatusAgendamento = statusAgendamento;
+        this.DataeHoraAgendamento = dataeHoraAgendamento;
+        this.tipoAutomovel = tipoAutomovel;
+        this.numeroPlaca = numeroPlaca;
     }
 
-    public String getIdAgendamento() {
+    // Getters e Setters
+    public int getIdAgendamento() {
         return IdAgendamento;
     }
 
-    public void setIdAgendamento(String idAgendamento) {
-        IdAgendamento = idAgendamento;
+    public void setIdAgendamento(int idAgendamento) {
+        this.IdAgendamento = idAgendamento;
     }
 
     public LocalDateTime getDataeHoraAgendamento() {
@@ -49,7 +54,7 @@ public class Agendamento {
     }
 
     public void setDataeHoraAgendamento(LocalDateTime dataeHoraAgendamento) {
-        DataeHoraAgendamento = dataeHoraAgendamento;
+        this.DataeHoraAgendamento = dataeHoraAgendamento;
     }
 
     public String getStatusAgendamento() {
@@ -57,7 +62,23 @@ public class Agendamento {
     }
 
     public void setStatusAgendamento(String statusAgendamento) {
-        StatusAgendamento = statusAgendamento;
+        this.StatusAgendamento = statusAgendamento;
+    }
+
+    public String getTipoAutomovel() {
+        return tipoAutomovel;
+    }
+
+    public void setTipoAutomovel(String tipoAutomovel) {
+        this.tipoAutomovel = tipoAutomovel;
+    }
+
+    public String getNumeroPlaca() {
+        return numeroPlaca;
+    }
+
+    public void setNumeroPlaca(String numeroPlaca) {
+        this.numeroPlaca = numeroPlaca;
     }
 
     public Servico getServico() {
@@ -66,6 +87,16 @@ public class Agendamento {
 
     public void setServico(Servico servico) {
         this.servico = servico;
+    }
 
+    public List<Vendas> getVendas() {
+        return vendas;
+    }
+
+    public void setVendas(List<Vendas> vendas) {
+        this.vendas = vendas;
     }
 }
+
+
+

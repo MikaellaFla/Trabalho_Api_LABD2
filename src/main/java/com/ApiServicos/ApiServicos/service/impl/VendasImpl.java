@@ -5,6 +5,7 @@ import com.ApiServicos.ApiServicos.repository.VendasRepository;
 import com.ApiServicos.ApiServicos.service.VendasService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.List;
 
 @Service
@@ -23,20 +24,26 @@ public class VendasImpl implements VendasService {
     }
 
     @Override
-    public String updateVenda(Vendas venda) {
-        vendasRepository.save(venda);
-        return "Venda atualizada com sucesso";
+    public String updateVenda(int idVenda, Vendas venda) {  // Alterado para int
+        Optional<Vendas> vendaExistente = vendasRepository.findById(idVenda); // Alterado para int
+        if (vendaExistente.isPresent()) {
+            Vendas vendaAtualizada = vendaExistente.get();
+            vendaAtualizada.setAgendamento(venda.getAgendamento());
+            vendasRepository.save(vendaAtualizada);
+            return "Sucesso";
+        }
+        return "Falha";
     }
 
     @Override
-    public String deleteVenda(String IdVenda) {
-        vendasRepository.deleteById(IdVenda);
+    public String deleteVenda(int idVenda) {  // Alterado para int
+        vendasRepository.deleteById(idVenda);  // Alterado para int
         return "Venda deletada com sucesso";
     }
 
     @Override
-    public Vendas getVenda(String IdVenda) {
-        return vendasRepository.findById(IdVenda).orElse(null);
+    public Vendas getVenda(int idVenda) {  // Alterado para int
+        return vendasRepository.findById(idVenda).orElse(null);  // Alterado para int
     }
 
     @Override
@@ -44,4 +51,6 @@ public class VendasImpl implements VendasService {
         return vendasRepository.findAll();
     }
 }
+
+
 

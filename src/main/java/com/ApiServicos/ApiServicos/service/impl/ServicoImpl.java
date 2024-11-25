@@ -6,6 +6,7 @@ import com.ApiServicos.ApiServicos.service.ServicoService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServicoImpl implements ServicoService {
@@ -23,20 +24,34 @@ public class ServicoImpl implements ServicoService {
     }
 
     @Override
-    public String updateServico(Servico servico) {
-        servicoRepository.save(servico);
+    public String updateServico(int id, Servico servico) { // Alterado para int
+        // Buscando o serviço pelo ID
+        Optional<Servico> existingServico = servicoRepository.findById(id); // Alterado para int
+
+        // Verifica se o serviço existe
+        if (existingServico.isPresent()) {
+            Servico servicoToUpdate = existingServico.get();
+            // Atualiza os campos do serviço
+            servicoToUpdate.setNomeServico(servico.getNomeServico());
+            servicoToUpdate.setPrecoServico(servico.getPrecoServico());
+            // Salva o serviço atualizado
+            servicoRepository.save(servicoToUpdate);
+            return "Sucesso";
+        } else {
+            // Retorna uma mensagem de erro caso o serviço não seja encontrado
+            return "Serviço não encontrado!";
+        }
+    }
+
+    @Override
+    public String deleteServico(int IdServico) { // Alterado para int
+        servicoRepository.deleteById(IdServico); // Alterado para int
         return "Sucesso";
     }
 
     @Override
-    public String deleteServico(String IdServico) {
-        servicoRepository.deleteById(IdServico);
-        return "Sucesso";
-    }
-
-    @Override
-    public Servico getServico(String IdServico) {
-        return servicoRepository.findById(IdServico).get();
+    public Servico getServico(int IdServico) { // Alterado para int
+        return servicoRepository.findById(IdServico).orElse(null); // Alterado para retornar null caso não exista
     }
 
     @Override
@@ -44,3 +59,4 @@ public class ServicoImpl implements ServicoService {
         return servicoRepository.findAll();
     }
 }
+

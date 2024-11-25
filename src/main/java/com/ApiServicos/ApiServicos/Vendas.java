@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 public class Vendas {
 
     @Id
-    private String IdVenda;
+    private int idVenda; // Alterado para int
 
     @ManyToOne
     @JoinColumn(name = "id_agendamento", nullable = false) // Chave estrangeira que se refere ao IdAgendamento
@@ -22,17 +22,17 @@ public class Vendas {
     public Vendas() {
     }
 
-    public Vendas(String idVenda, Agendamento agendamento) {
-        IdVenda = idVenda;
+    public Vendas(int idVenda, Agendamento agendamento) {
+        this.idVenda = idVenda;
         this.agendamento = agendamento;
     }
 
-    public String getIdVenda() {
-        return IdVenda;
+    public int getIdVenda() { // Alterado para int
+        return idVenda;
     }
 
-    public void setIdVenda(String idVenda) {
-        IdVenda = idVenda;
+    public void setIdVenda(int idVenda) { // Alterado para int
+        this.idVenda = idVenda;
     }
 
     public Agendamento getAgendamento() {
@@ -43,4 +43,5 @@ public class Vendas {
         this.agendamento = agendamento;
     }
 }
+
 

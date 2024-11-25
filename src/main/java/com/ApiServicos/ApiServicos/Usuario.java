@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 public class Usuario {
 
     @Id
-    private String IdUsuario;
+    private int IdUsuario; // Alterado para int
     private String LoginUsuario;
     private String SenhaUsuario;
     private String TipoUsuario;
@@ -17,18 +17,18 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String idUsuario, String loginUsuario, String senhaUsuario, String tipoUsuario) {
+    public Usuario(int idUsuario, String loginUsuario, String senhaUsuario, String tipoUsuario) { // Alterado para int
         this.IdUsuario = idUsuario;
         this.LoginUsuario = loginUsuario;
         this.SenhaUsuario = senhaUsuario;
         this.TipoUsuario = tipoUsuario;
     }
 
-    public String getIdUsuario() {
+    public int getIdUsuario() { // Alterado para int
         return IdUsuario;
     }
 
-    public void setIdUsuario(String idUsuario) {
+    public void setIdUsuario(int idUsuario) { // Alterado para int
         this.IdUsuario = idUsuario;
     }
 
@@ -56,3 +56,4 @@ public class Usuario {
         this.TipoUsuario = tipoUsuario;
     }
 }
+

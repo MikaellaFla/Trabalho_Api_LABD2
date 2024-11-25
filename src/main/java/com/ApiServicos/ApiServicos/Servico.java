@@ -8,10 +8,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "servico_info")
-public class Servico
-{
+public class Servico {
+
     @Id
-    private String IdServico;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Geração automática de IDs
+    private int IdServico;
+
     private String NomeServico;
     private BigDecimal PrecoServico;
 
@@ -19,13 +21,23 @@ public class Servico
     @JsonIgnoreProperties("servico")
     private List<Agendamento> agendamentos;
 
+    // Construtor vazio
     public Servico() {
     }
 
-    public Servico(String nomeServico, BigDecimal precoServico, String idServico) {
+    // Construtor com parâmetros
+    public Servico(String nomeServico, BigDecimal precoServico) {
         NomeServico = nomeServico;
         PrecoServico = precoServico;
-        IdServico = idServico;
+    }
+
+    // Getters e Setters
+    public int getIdServico() {
+        return IdServico;
+    }
+
+    public void setIdServico(int idServico) {
+        this.IdServico = idServico;
     }
 
     public String getNomeServico() {
@@ -44,14 +56,6 @@ public class Servico
         PrecoServico = precoServico;
     }
 
-    public String getIdServico() {
-        return IdServico;
-    }
-
-    public void setIdServico(String idServico) {
-        IdServico = idServico;
-    }
-
     public List<Agendamento> getAgendamentos() {
         return agendamentos;
     }
@@ -60,3 +64,5 @@ public class Servico
         this.agendamentos = agendamentos;
     }
 }
+
+

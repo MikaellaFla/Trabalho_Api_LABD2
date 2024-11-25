@@ -8,3 +8,8 @@ spring:
     hibernate:
       ddl-auto: update # ou create, dependendo do que você precisa
     show-sql: true # opcional, mas útil para depuração
+
+server:
+  address: 0.0.0.0
+  port: 8080
+
