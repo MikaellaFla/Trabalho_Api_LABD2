@@ -1,20 +1,17 @@
 package com.ApiServicos.ApiServicos.service.impl;
 
 import com.ApiServicos.ApiServicos.Agendamento;
-import com.ApiServicos.ApiServicos.Servico;
 import com.ApiServicos.ApiServicos.repository.AgendamentoRepository;
-import com.ApiServicos.ApiServicos.repository.ServicoRepository;
 import com.ApiServicos.ApiServicos.service.AgendamentoService;
-import com.ApiServicos.ApiServicos.service.ServicoService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AgendamentoImpl implements AgendamentoService {
 
-    AgendamentoRepository agendamentoRepository;
-    ServicoRepository servicoRepository;
+    private final AgendamentoRepository agendamentoRepository;
 
     public AgendamentoImpl(AgendamentoRepository agendamentoRepository) {
         this.agendamentoRepository = agendamentoRepository;
@@ -27,9 +24,17 @@ public class AgendamentoImpl implements AgendamentoService {
     }
 
     @Override
-    public String updateAgendamento(Agendamento agendamento) {
-        agendamentoRepository.save(agendamento);
-        return "Sucesso";
+    public String updateAgendamento(String IdAgendamento, Agendamento agendamento) {
+        Optional<Agendamento> agendamentoExistente = agendamentoRepository.findById(IdAgendamento);
+        if (agendamentoExistente.isPresent()) {
+            Agendamento agendamentoAtualizado = agendamentoExistente.get();
+            agendamentoAtualizado.setDataeHoraAgendamento(agendamento.getDataeHoraAgendamento());
+            agendamentoAtualizado.setStatusAgendamento(agendamento.getStatusAgendamento());
+            agendamentoAtualizado.setServico(agendamento.getServico());
+            agendamentoRepository.save(agendamentoAtualizado);
+            return "Sucesso";
+        }
+        return "Falha";
     }
 
     @Override
@@ -40,7 +45,7 @@ public class AgendamentoImpl implements AgendamentoService {
 
     @Override
     public Agendamento getAgendamento(String IdAgendamento) {
-        return agendamentoRepository.findById(IdAgendamento).get();
+        return agendamentoRepository.findById(IdAgendamento).orElse(null);
     }
 
     @Override
@@ -48,3 +53,4 @@ public class AgendamentoImpl implements AgendamentoService {
         return agendamentoRepository.findAll();
     }
 }
+

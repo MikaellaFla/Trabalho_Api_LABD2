@@ -2,6 +2,8 @@ package com.ApiServicos.ApiServicos.Controller;
 
 import com.ApiServicos.ApiServicos.Usuario;
 import com.ApiServicos.ApiServicos.service.UsuarioService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,30 +19,41 @@ public class UsuarioController {
     }
 
     @GetMapping("{IdUsuario}")
-    public Usuario getUsuarioDetalhes(@PathVariable("IdUsuario") String IdUsuario) {
-        return usuarioService.getUsuario(IdUsuario);
+    public ResponseEntity<Usuario> getUsuarioDetalhes(@PathVariable("IdUsuario") String IdUsuario) {
+        Usuario usuario = usuarioService.getUsuario(IdUsuario);
+        if (usuario != null) {
+            return new ResponseEntity<>(usuario, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping
-    public List<Usuario> getAllUsuarioDetalhes() {
-        return usuarioService.getAllUsuarios();
+    public ResponseEntity<List<Usuario>> getAllUsuarioDetalhes() {
+        List<Usuario> usuarios = usuarioService.getAllUsuarios();
+        return new ResponseEntity<>(usuarios, HttpStatus.OK);
     }
 
     @PostMapping
-    public String createUsuarioDetalhes(@RequestBody Usuario usuario) {
+    public ResponseEntity<String> createUsuarioDetalhes(@RequestBody Usuario usuario) {
         usuarioService.createUsuario(usuario);
-        return "Usuário Criado Com Sucesso!";
+        return new ResponseEntity<>("Usuário Criado Com Sucesso!", HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public String updateUsuarioDetalhes(@RequestBody Usuario usuario) {
-        usuarioService.updateUsuario(usuario);
-        return "Usuário Atualizado Com Sucesso!";
+    @PutMapping("{IdUsuario}")
+    public ResponseEntity<String> updateUsuarioDetalhes(@PathVariable("IdUsuario") String IdUsuario, @RequestBody Usuario usuario) {
+        String resultado = usuarioService.updateUsuario(IdUsuario, usuario);
+        if ("Sucesso".equals(resultado)) {
+            return new ResponseEntity<>("Usuário Atualizado Com Sucesso!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Usuário Não Encontrado!", HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("{IdUsuario}")
-    public String deleteUsuarioDetalhes(@PathVariable("IdUsuario") String IdUsuario) {
+    public ResponseEntity<String> deleteUsuarioDetalhes(@PathVariable("IdUsuario") String IdUsuario) {
         usuarioService.deleteUsuario(IdUsuario);
-        return "Usuário Deletado Com Sucesso!";
+        return new ResponseEntity<>("Usuário Deletado Com Sucesso!", HttpStatus.OK);
     }
 }
+
