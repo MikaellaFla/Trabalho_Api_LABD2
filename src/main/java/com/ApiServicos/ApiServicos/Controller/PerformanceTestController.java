@@ -23,8 +23,8 @@ public class PerformanceTestController {
 
     // Endpoint para o Round Robin
     @GetMapping("/test/rr")
-    public String testRoundRobin(@RequestParam int numRequests, @RequestParam int numThreads) {
-        performanceTestService.runRoundRobin(numRequests, numThreads);
+    public String testRoundRobin(@RequestParam int numRequests) {
+        performanceTestService.runRoundRobin(numRequests);
         return "Teste Round Robin concluído!";
     }
 }
