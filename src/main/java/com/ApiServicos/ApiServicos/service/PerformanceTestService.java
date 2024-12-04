@@ -47,8 +47,6 @@ public class PerformanceTestService {
             try {
                 // Cria uma instância de Servico
                 Servico servico = new Servico("Serviço " + i, BigDecimal.valueOf(50.0));
-
-                // Chama o método createServico
                 servicoService.createServico(servico);
             } catch (Exception e) {
                 System.out.println("Erro na requisição " + (i + 1) + ": " + e.getMessage());
